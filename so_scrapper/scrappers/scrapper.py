@@ -33,7 +33,7 @@ def get_questions(method: ScrappingType, nb_of_requests: int | float) -> list[Qu
     questions = []
     for _ in range(int(nb_of_requests)):
         try:
-            questions.append(_SCRAPPERS_MAP[method](randint(0,20000000)))
+            questions.append(_SCRAPPERS_MAP[method](randint(0, 20000000)))
         except HTTPException as e:
             logger.warning(f"HTTP Error, no network or server:\n{e}")
         except KeyError as e:

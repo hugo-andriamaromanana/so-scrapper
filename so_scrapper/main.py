@@ -1,11 +1,14 @@
 """Main module of the so_scrapper package"""
+
+from os import environ
 from venv import logger
-from so_scrapper.scrappers.question import Question
-from so_scrapper.scrappers.scrapper import ScrappingType, get_questions
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from os import environ
+
+from so_scrapper.scrappers.question import Question
+from so_scrapper.scrappers.scrapper import ScrappingType, get_questions
 
 _DB_NAME = environ.get("DB_NAME", "database.db")
 _DB_URL = f"sqlite:///{_DB_NAME}"
@@ -17,7 +20,8 @@ def create_db() -> Session:
     Session = sessionmaker(bind=engine)
     session = Session()
     session.execute(
-        "CREATE TABLE IF NOT EXISTS questions (title TEXT, link TEXT, votes INTEGER, detail TEXT, tags TEXT, date TEXT)"
+        "CREATE TABLE IF NOT EXISTS questions "
+        + "(title TEXT, link TEXT, votes INTEGER, detail TEXT, tags TEXT, date TEXT)"
     )
     session.commit()
     logger.info("Database created")
@@ -27,7 +31,8 @@ def create_db() -> Session:
 def add_question_to_db(session: Session, question: Question) -> None:
     """Add a question to the database"""
     session.execute(
-        "INSERT INTO questions (title, link, votes, detail, tags, date) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO questions (title, link, "
+        + "votes, detail, tags, date) VALUES (?, ?, ?, ?, ?, ?)",
         (
             question.title,
             question.link,
