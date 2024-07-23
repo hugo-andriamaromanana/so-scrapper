@@ -3,8 +3,9 @@
 from datetime import datetime
 
 from bs4 import BeautifulSoup
-from requests import get
 from loguru import logger
+from requests import get
+
 from so_scrapper.scrappers.question import Question
 
 _BASE_URL = "https://stackoverflow.com/questions/"
@@ -18,13 +19,7 @@ def _find_votes(soup: BeautifulSoup) -> int | None:
         )
         vote_count = int(vote_count_div["data-value"])
         return vote_count
-    except TypeError:
-        logger.warning("No votes found")
-        return None
-    except ValueError:
-        logger.warning("No votes found")
-        return None
-    except Exception as e:
+    except (Exception, TypeError, ValueError) as e:
         logger.exception(e)
 
 
@@ -51,8 +46,9 @@ def _find_tags(soup: BeautifulSoup) -> list[str] | None:
 def _find_title_url(soup: BeautifulSoup) -> str | None:
     """Find title link in Stack Overflow question"""
     try:
-        title_link = soup.select_one("#question-header > h1 > a")["href"]
-        return title_link
+        title_link = soup.select_one("#question-header > h1 > a")
+        if title_link is not None:
+            return title_link.get("href")
     except Exception as e:
         logger.exception(e)
         return None

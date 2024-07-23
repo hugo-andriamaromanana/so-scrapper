@@ -1,9 +1,10 @@
 """Stackoverflow scrapper module using Stack Overflow API."""
 
 from datetime import datetime
+from os import environ
 
 from requests import get as requests_get
-from os import environ
+
 from so_scrapper.scrappers.question import Question
 
 _BASE_URL = "https://api.stackexchange.com/2.3/questions/"
