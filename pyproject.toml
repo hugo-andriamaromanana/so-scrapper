@@ -4,6 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["hugo-andriamaromanana <hugo.andriamaromanana@laplateforme.io>"]
 readme = "README.md"
+packages = [
+    { include = "so_scrapper", from = "." },
+    { include = "console_scripts", from = "." },
+]
 
 
 [tool.poetry.scripts]
