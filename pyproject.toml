@@ -5,6 +5,10 @@ description = ""
 authors = ["hugo-andriamaromanana <hugo.andriamaromanana@laplateforme.io>"]
 readme = "README.md"
 
+
+[tool.poetry.scripts]
+so-scrapper = "console_scripts.scrapper:main"
+
 [tool.poetry.dependencies]
 python = "^3.11"
 icecream = "^2.1.3"

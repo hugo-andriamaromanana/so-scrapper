@@ -8,13 +8,12 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 from so_scrapper.scrappers.question import Question
-from so_scrapper.scrappers.scrapper import ScrappingType, get_questions
 
 _DB_NAME = environ.get("DB_NAME", "database.db")
 _DB_URL = f"sqlite:///{_DB_NAME}"
 
 
-def create_db() -> Session:
+def _create_db() -> Session:
     """Create the database"""
     engine = create_engine(_DB_URL)
     Session = sessionmaker(bind=engine)
@@ -28,7 +27,7 @@ def create_db() -> Session:
     return session
 
 
-def add_question_to_db(session: Session, question: Question) -> None:
+def _add_question_to_db(session: Session, question: Question) -> None:
     """Add a question to the database"""
     session.execute(
         "INSERT INTO questions (title, link, "
@@ -46,11 +45,10 @@ def add_question_to_db(session: Session, question: Question) -> None:
     logger.info("Question added to the database")
 
 
-def add_questions_to_db(method: ScrappingType, nb_of_requests: int) -> None:
+def add_questions_to_db(questions: list[Question]) -> None:
     """Add questions to the database"""
-    session = create_db()
-    questions = get_questions(method, nb_of_requests)
+    session = _create_db()
     for question in questions:
-        add_question_to_db(question)
+        _add_question_to_db(session, question)
     print("Questions added to the database")
     session.close()

@@ -13,7 +13,7 @@ from so_scrapper.scrappers.bs4 import get_question_w_bs4
 from so_scrapper.scrappers.question import Question
 
 
-class ScrappingType(str, Enum):
+class ScrapType(str, Enum):
     """Enum for scrapper types"""
 
     API = auto()
@@ -22,13 +22,13 @@ class ScrappingType(str, Enum):
 
 _ScrappingFunc = Callable[[int], Question]
 
-_SCRAPPERS_MAP: dict[ScrappingType, _ScrappingFunc] = {
-    ScrappingType.API: get_question_w_api,
-    ScrappingType.BS4: get_question_w_bs4,
+_SCRAPPERS_MAP: dict[ScrapType, _ScrappingFunc] = {
+    ScrapType.API: get_question_w_api,
+    ScrapType.BS4: get_question_w_bs4,
 }
 
 
-def get_questions(method: ScrappingType, nb_of_requests: int | float) -> list[Question]:
+def get_questions(method: ScrapType, nb_of_requests: int | float) -> list[Question]:
     """Uses the scapping method"""
     questions = []
     for _ in range(int(nb_of_requests)):
