@@ -13,6 +13,7 @@ from so_scrapper.scrappers.question import Question
 
 OUTPUT_PATH = Path("questions.csv")
 
+
 def add_questions_to_db_parallel(questions: list[Question]) -> None:
     """Add questions to the database in parallel"""
     pool = Pool()
