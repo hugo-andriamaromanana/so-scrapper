@@ -3,7 +3,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from so_scrapper.scrappers.scrapper import get_questions, ScrapType
+from so_scrapper.scrappers.scrapper import ScrapType, get_questions
 
 
 class TestScrapper(TestCase):
@@ -22,4 +22,3 @@ class TestScrapper(TestCase):
         mock_get_question_w_bs4.return_value = None
         questions = get_questions(ScrapType.BS4, 1)
         self.assertEqual(questions, [])
-    

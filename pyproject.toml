@@ -22,6 +22,7 @@ pydantic = "^2.8.2"
 pandas = "^2.2.2"
 beautifulsoup4 = "^4.12.3"
 sqlalchemy = "^2.0.31"
+pymongo = "^4.8.0"
 
 
 [build-system]

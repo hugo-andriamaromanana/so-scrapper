@@ -1,4 +1,4 @@
-"""Main module of the so_scrapper package"""
+"""SQL Alchemy database functions"""
 
 from os import environ
 from venv import logger

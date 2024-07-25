@@ -7,14 +7,15 @@ from sys import exit as sys_exit
 
 from loguru import logger
 
-from so_scrapper.saves.db import add_questions_to_db
+from so_scrapper.saves.mongo import add_questions_to_mongo
 from so_scrapper.saves.ptdf import ptdf
+from so_scrapper.saves.sql_alchemy import add_questions_to_db
 from so_scrapper.scrappers.question import Question
 
 OUTPUT_PATH = Path("questions.csv")
 
 
-def add_questions_to_db_parallel(questions: list[Question]) -> None:
+def add_questions_to_sql_parallel(questions: list[Question]) -> None:
     """Add questions to the database in parallel"""
     pool = Pool()
     pool.map(add_questions_to_db, [questions])
@@ -34,11 +35,13 @@ class SaveMethod(str, Enum):
 
     CSV = auto()
     DB = auto()
+    MONGO = auto()
 
 
 _SAVING_MAP = {
     SaveMethod.CSV: add_questions_to_csv,
-    SaveMethod.DB: add_questions_to_db_parallel,
+    SaveMethod.DB: add_questions_to_sql_parallel,
+    SaveMethod.MONGO: add_questions_to_mongo
 }
 
 
