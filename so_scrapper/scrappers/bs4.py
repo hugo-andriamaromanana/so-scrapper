@@ -90,10 +90,15 @@ def _find_title(title_link: str | None) -> str | None:
         return None
 
 
-def get_question_w_bs4(id: int) -> Question:
+def get_question_w_bs4(id: int) -> Question | None:
     """Get Stack Overflow question by ID"""
     response = get(f"{_BASE_URL}{id}")
     soup = BeautifulSoup(response.content, "html.parser")
+    if response.status_code != 200:
+        logger.error("Failed to retrieve Stack Overflow question")
+        logger.error(f"Response status code: {response.status_code}")
+        logger.error(f"Response content: {response.content}")
+        return None
     votes = _find_votes(soup)
     title_link = _find_title_url(soup)
     title = _find_title(title_link)
@@ -101,6 +106,8 @@ def get_question_w_bs4(id: int) -> Question:
     tags = _find_tags(soup)
     date = _find_creation_date(soup)
     url = _find_url(title_link)
+    if None in (votes, title, detail, tags, date, url):
+        return None
     return Question(
         title=title, link=url, votes=votes, detail=detail, tags=tags, date=date
     )

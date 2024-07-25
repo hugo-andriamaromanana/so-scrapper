@@ -44,7 +44,7 @@ def _find_title(data: dict) -> str | None:
     return data.get("title")
 
 
-def get_question_w_api(id: int) -> Question:
+def get_question_w_api(id: int) -> Question | None:
     """Get Stack Overflow question by ID"""
     params = {"site": "stackoverflow", "filter": "withbody", "key": _API_KEY}
     response = requests_get(f"{_BASE_URL}{id}", params=params)
@@ -55,6 +55,8 @@ def get_question_w_api(id: int) -> Question:
     tags = _find_tags(data)
     date = _find_creation_date(data)
     url = _find_url(data)
+    if None in (votes, title, detail, tags, date, url):
+        return None
     return Question(
         title=title, link=url, votes=votes, detail=detail, tags=tags, date=date
     )

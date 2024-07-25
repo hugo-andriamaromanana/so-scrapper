@@ -20,7 +20,7 @@ class ScrapType(str, Enum):
     BS4 = auto()
 
 
-_ScrappingFunc = Callable[[int], Question]
+_ScrappingFunc = Callable[[int], Question | None]
 
 _SCRAPPERS_MAP: dict[ScrapType, _ScrappingFunc] = {
     ScrapType.API: get_question_w_api,
@@ -33,7 +33,9 @@ def get_questions(method: ScrapType, nb_of_requests: int | float) -> list[Questi
     questions = []
     for _ in range(int(nb_of_requests)):
         try:
-            questions.append(_SCRAPPERS_MAP[method](randint(0, 20000000)))
+            question = _SCRAPPERS_MAP[method](randint(0, 20000000))
+            if question is not None:
+                questions.append(question)
         except HTTPException as e:
             logger.warning(f"HTTP Error, no network or server:\n{e}")
         except KeyError as e:

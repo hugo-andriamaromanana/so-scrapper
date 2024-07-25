@@ -11,6 +11,7 @@ from so_scrapper.saves.db import add_questions_to_db
 from so_scrapper.saves.ptdf import ptdf
 from so_scrapper.scrappers.question import Question
 
+OUTPUT_PATH = Path("questions.csv")
 
 def add_questions_to_db_parallel(questions: list[Question]) -> None:
     """Add questions to the database in parallel"""
@@ -21,10 +22,10 @@ def add_questions_to_db_parallel(questions: list[Question]) -> None:
     logger.info("Questions added to the database in parallel")
 
 
-def add_questions_to_csv(questions: list[Question], output_path: Path) -> None:
+def add_questions_to_csv(questions: list[Question]) -> None:
     """Add questions to a CSV file"""
     df_questions = ptdf(questions)
-    df_questions.to_csv(output_path, index=False)
+    df_questions.to_csv(OUTPUT_PATH, index=False)
 
 
 class SaveMethod(str, Enum):
